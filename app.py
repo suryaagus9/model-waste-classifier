@@ -27,7 +27,7 @@ CLASS_NAMES = ['Anorganik', 'Organik']
 def download_model_if_not_exists():
     if not os.path.exists(MODEL_PATH):
         print("Model tidak ditemukan. Mengunduh dari Google Drive...")
-        file_id = "GANTI_DENGAN_FILE_ID_GOOGLE_DRIVE"
+        file_id = "1xSZNLPH1RLM5khEOR11v9C-u3wJuRnH0"
         url = f"https://drive.google.com/uc?export=download&id={file_id}"
         response = requests.get(url)
         if response.status_code == 200:

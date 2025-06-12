@@ -6,6 +6,8 @@ from PIL import Image
 import io
 import tensorflow as tf
 import requests
+import gdown
+
 
 app = Flask(__name__)
 # Konfigurasi CORS: izinkan permintaan dari frontend Anda (misalnya localhost:8080 atau domain deploy Anda)
@@ -27,16 +29,14 @@ CLASS_NAMES = ['Anorganik', 'Organik']
 def download_model_if_not_exists():
     if not os.path.exists(MODEL_PATH):
         print("Model tidak ditemukan. Mengunduh dari Google Drive...")
-        file_id = "1xSZNLPH1RLM5khEOR11v9C-u3wJuRnH0"
-        url = f"https://drive.google.com/uc?export=download&id={file_id}"
-        response = requests.get(url)
-        if response.status_code == 200:
-            os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-            with open(MODEL_PATH, 'wb') as f:
-                f.write(response.content)
+        file_id = "1xSZNLPH1RLM5khEOR11v9C-u3wJuRnH0"  
+        url = f"https://drive.google.com/uc?id={file_id}"
+        os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+        try:
+            gdown.download(url, MODEL_PATH, quiet=False)
             print("✅ Model berhasil diunduh.")
-        else:
-            print("❌ Gagal mengunduh model. Status code:", response.status_code)
+        except Exception as e:
+            print(f"❌ Gagal mengunduh model: {e}")
             
 def load_model():
     """Memuat model Keras yang sudah terlatih."""

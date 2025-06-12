@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image
 import io
 import tensorflow as tf
+import requests
 
 app = Flask(__name__)
 # Konfigurasi CORS: izinkan permintaan dari frontend Anda (misalnya localhost:8080 atau domain deploy Anda)
@@ -23,6 +24,20 @@ IMG_WIDTH = 224
 # Daftar kelas (sesuaikan dengan urutan output model Anda)
 CLASS_NAMES = ['Anorganik', 'Organik']
 
+def download_model_if_not_exists():
+    if not os.path.exists(MODEL_PATH):
+        print("Model tidak ditemukan. Mengunduh dari Google Drive...")
+        file_id = "GANTI_DENGAN_FILE_ID_GOOGLE_DRIVE"
+        url = f"https://drive.google.com/uc?export=download&id={file_id}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+            with open(MODEL_PATH, 'wb') as f:
+                f.write(response.content)
+            print("✅ Model berhasil diunduh.")
+        else:
+            print("❌ Gagal mengunduh model. Status code:", response.status_code)
+            
 def load_model():
     """Memuat model Keras yang sudah terlatih."""
     global MODEL
@@ -82,6 +97,7 @@ def health_check():
 # Memuat model saat aplikasi Flask dimulai
 # Gunakan app.before_first_request jika ingin hanya sekali pada request pertama
 with app.app_context():
+    download_model_if_not_exists()
     load_model() # Muat model saat aplikasi Flask dimulai
 
 

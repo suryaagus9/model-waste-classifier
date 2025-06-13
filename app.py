@@ -11,7 +11,7 @@ import gdown
 
 app = Flask(__name__)
 # Konfigurasi CORS: izinkan permintaan dari frontend Anda (misalnya localhost:8080 atau domain deploy Anda)
-CORS(app, resources={r"/predict": {"origins": "http://localhost:9001"}}) # Ganti dengan origin frontend Anda
+CORS(app, resources={r"/predict": {"origins": "http://localhost:9001", "https://maykora.github.io/PilahCerdas/"}}) # Ganti dengan origin frontend Anda
 
 # Path ke model .h5 Anda (setelah diupload ke server Flask nanti)
 # Di lingkungan development lokal, Anda bisa letakkan model.h5 di sini

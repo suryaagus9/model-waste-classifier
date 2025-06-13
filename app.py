@@ -14,8 +14,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": [
     "http://localhost:9001", 
     "http://localhost:8080",  
+    "https://maykora.github.io" 
     "https://maykora.github.io/PilahCerdas/" 
-    
 ]}})
 
 
